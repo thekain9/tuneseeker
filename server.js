@@ -14,6 +14,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(helmet());
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, './front-end/build')));
+
+//Api routes
 
 app.get('/api/search/:term/:country/:media', async (req, res) => {
     const term = req.params.term;
@@ -80,6 +84,12 @@ app.delete('/favourites/:trackId', (req, res) => {
         res.status(500).send('Error removing from favourites');
     }
 });
+
+// The "catchall" handler: for any request that doesn't match one above, send back the index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './front-end/build', 'index.html'));
+});
+
 
 const port = process.env.PORT || 8080;
 
