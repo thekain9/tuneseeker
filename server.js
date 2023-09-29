@@ -12,7 +12,20 @@ const path = require('path');
 //middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"], // You might need 'unsafe-inline' for some inline scripts
+            styleSrc: ["'self'", "'unsafe-inline'"], // 'unsafe-inline' might be needed for some inline styles
+            connectSrc: ["'self'", "https://itunes.apple.com"], // Connect to self and iTunes API
+            imgSrc: ["'self'", "data:", "https://itunes.apple.com"], // Assuming you might load images from iTunes
+            fontSrc: ["'self'", "data:"], // Fonts might be loaded as data URIs
+            objectSrc: ["'none'"], // Disables object/embed tags
+            upgradeInsecureRequests: [] // Upgrade HTTP to HTTPS
+        }
+    }
+}));
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, './front-end/build')));
