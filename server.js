@@ -12,7 +12,25 @@ const path = require('path');
 //middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Added Google Fonts here
+            fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"], // Google Fonts usually requires this too
+            connectSrc: [
+                "'self'", 
+                "https://itunes.apple.com", 
+                "http://localhost:8080", 
+                
+            ],
+            imgSrc: ["'self'", "data:", "https://itunes.apple.com"],
+            objectSrc: ["'none'"],
+            upgradeInsecureRequests: []
+        }
+    }
+}));
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, './front-end/build')));
