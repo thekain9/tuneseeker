@@ -22,7 +22,8 @@ app.use(helmet({
             connectSrc: [
                 "'self'", 
                 "https://itunes.apple.com", 
-                "http://localhost:8080", 
+                "http://localhost:8080",
+                "http://localhost:8080/favourites"
                 
             ],
             imgSrc: ["'self'", "data:", "https://itunes.apple.com"],
